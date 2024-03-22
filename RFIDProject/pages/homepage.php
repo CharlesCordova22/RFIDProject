@@ -25,8 +25,6 @@
     <div class="arrow-container">
         <div class="arrow-down"></div>
     </div>
-    <div class="navbar">
-        
-    </div>
+    <?php include '../layout/bottomNavbar.php'; ?>
 </body>
 </html>

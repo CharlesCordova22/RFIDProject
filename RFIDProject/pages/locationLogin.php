@@ -36,5 +36,6 @@
             </form>
         </div>
     </div>
+    <?php include '../layout/bottomNavbar.php'; ?>
 </body>
 </html>
