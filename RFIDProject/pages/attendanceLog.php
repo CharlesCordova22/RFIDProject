@@ -25,15 +25,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/attendanceLog.css">
     <title>Attendance Log</title>
-    <script type="text/javascript" src="../../node_modules/jquery/dist/jquery.min.js"></script>
-    <script>
-			$(document).ready(function(){
-				 $("#getUID").load("../../student/UIDContainer.php");
-				setInterval(function() {
-					$("#getUID").load("../../student/UIDContainer.php");
-				}, 500);
-			});
-		</script>
 </head>
 <body>
     <div class="location-container">
@@ -49,7 +40,6 @@
     <div class="table-container">
         <div class="inner-container">
             <table>
-                <p id="getUID"></p>
                 <tr>
                     <th>STUDENT ID</th>
                     <th>SECTION</th>

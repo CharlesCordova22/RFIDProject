@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/homepage.css">
     <title>Homepage</title>
+    <script type="text/javascript" src="../../node_modules/jquery/dist/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#getUID").load("../backend/UIDContainer.php");
+            setInterval(function() {
+                $("#getUID").load("../backend/UIDContainer.php");
+            }, 500);
+        });
+    </script>
 </head>
+
 <body>
     <div class="main-container">
         <div class="logo-name">
@@ -27,4 +38,5 @@
     </div>
     <?php include '../layout/bottomNavbar.php'; ?>
 </body>
+
 </html>
