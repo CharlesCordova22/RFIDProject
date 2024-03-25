@@ -1,5 +1,5 @@
 <div class="navbar">
-    <a href="#" class="nav-item" id="user-icon"><img src="../icons/user.png" alt=""></a>
+    <a href="../pages/attendanceLog.php" class="nav-item" id="user-icon"><img src="../icons/user.png" alt=""></a>
     <a href="../pages/homepage.php" class="nav-item" id="dashboard-icon"><img src="../icons/home.png" alt=""></a>
     <a href="#" class="nav-item" id="time-icon"><img src="../icons/clock.png" alt=""></a>
 </div>
