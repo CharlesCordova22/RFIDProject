@@ -1,40 +1,36 @@
 <?php
-// $attendanceData = array(
-//     array(
-//         'STUDENT_ID' => '23217755',
-//         'SECTION' => 'ST12A6',
-//         'NAME' => 'SILAY, HEAVEN HARLEY B.',
-//         'TIME_IN' => '8:05 AM',
-//         'DATE' => 'MARCH 25, 2024 - WEDNESDAY',
-//         'REMARKS' => 'LATE'
-//     ),
-//     array(
-//         'STUDENT_ID' => '23217756',
-//         'SECTION' => 'ST12A7',
-//         'NAME' => 'DOE, JOHN',
-//         'TIME_IN' => '8:00 AM',
-//         'DATE' => 'MARCH 26, 2024 - WEDNESDAY',
-//         'REMARKS' => 'EARLY'
-//     ),
-// );
+require("../backend/local_setting.php");
+$Write = "<?php " . "echo " . "'';" . " ?>";
+file_put_contents('../backend/messageContainer.php', $Write);
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/attendanceLog.css">
     <title>Attendance Log</title>
+    <script type="text/javascript" src="../../node_modules/jquery/dist/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#getUID").load("../backend/UIDContainer.php");
+            setInterval(function() {
+                $("#getUID").load("../backend/UIDContainer.php");
+            }, 500);
+        });
+    </script>
 </head>
+
 <body>
     <div class="location-container">
         <div class="location">
             <h1>ATTENDANCE LOG</h1>
-            <?php if (!empty($attendanceData)): ?>
-                <div class="date">
-                    <h6><?php echo $attendanceData[0]['DATE']; ?></h6>
-                </div>
-            <?php endif; ?>
+            <?php ?>
+            <div class="date">
+                <h6><?php echo date('F j, Y - l'); ?></h6>
+            </div>
+            <?php ?>
         </div>
     </div>
     <div class="table-container">
@@ -47,18 +43,30 @@
                     <th>TIME IN</th>
                     <th>REMARKS</th>
                 </tr>
-                <?php foreach ($attendanceData as $record): ?>
-                <tr class="<?php echo ($record['REMARKS'] == 'LATE') ? 'late' : (($record['REMARKS'] == 'EARLY') ? 'early' : ''); ?>">
-                    <td><?php echo $record['STUDENT_ID']; ?></td>
-                    <td><?php echo $record['SECTION']; ?></td>
-                    <td><?php echo $record['NAME']; ?></td>
-                    <td><?php echo $record['TIME_IN']; ?></td>
-                    <td><?php echo $record['REMARKS']; ?></td>
-                </tr>
-                <?php endforeach; ?>
+                <?php
+                $sql = "SELECT * FROM student_info JOIN attendance ON attendance.student_id = student_info.student_id";
+                $result = mysqli_query($conn, $sql);
+                if (!$result) {
+                    // Query failed, handle the error
+                    echo "Error: " . mysqli_error($conn);
+                } else {
+                    // Query successful, fetch and display data
+                    while ($resultRow = mysqli_fetch_assoc($result)) {
+
+                ?>
+                        <tr class="<?php echo ($resultRow["remarks"] == 'LATE') ? 'late' : (($resultRow["remarks"] == 'EARLY') ? 'early' : ''); ?>">
+                            <td><?php echo $resultRow["student_id"] ?></td>
+                            <td><?php echo $resultRow["section"]  ?></td>
+                            <td><?php echo $resultRow["name"]  ?></td>
+                            <td><?php echo date('h:i A', strtotime($resultRow["time-in"])) ?></td>
+                            <td><?php echo $resultRow["remarks"]  ?></td>
+                        </tr>
+                <?php  }
+                } ?>
             </table>
         </div>
     </div>
     <?php include '../layout/bottomNavbar.php'; ?>
 </body>
+
 </html>
