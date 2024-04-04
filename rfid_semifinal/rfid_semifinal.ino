@@ -67,7 +67,7 @@ void loop() {
     //Post Data
     postData = "tag=" + UIDresultSend;
   
-    http.begin(client,"http://192.168.1.7/RFIDProject/RFIDProject/backend/getUID.php");  //Specify request destination
+    http.begin(client,"http://192.168.1.25/RFIDProject/RFIDProject/backend/getUID.php");  //Specify request destination
     http.addHeader("Content-Type", "application/x-www-form-urlencoded"); //Specify content-type header
    
     int httpCode = http.POST(postData);   //Send the request

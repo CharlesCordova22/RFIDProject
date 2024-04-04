@@ -13,6 +13,7 @@ file_put_contents('../backend/messageContainer.php', $Write);
     <script type="text/javascript" src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
+            // Function to fetch message from server
             function fetchMessage() {
                 $.ajax({
                     url: "../backend/messageContainer.php",
@@ -20,7 +21,8 @@ file_put_contents('../backend/messageContainer.php', $Write);
                     success: function(response) {
                         if (response.message === "Attendance recorded successfully!") {
                             console.log("Response received: ", response); // Log the response to the console
-                            $("#getMessage").html(response); // update the message on the page
+                            $("#getMessage").html(response); // Update the message on the page
+                            captureImage(); // Capture image after swiping the card
                         } else if (response.message === "Time-out updated successfully!") {
                             let student_id = response.student_id;
                             window.location.href = '../pages/locationLogin.php?student_id=' + student_id;
@@ -32,11 +34,61 @@ file_put_contents('../backend/messageContainer.php', $Write);
                 });
             }
 
+            function captureImage() {
+                var video = document.createElement('video');
+                var canvas = document.getElementById('canvas');
+                var context = canvas.getContext('2d');
+
+                navigator.mediaDevices.getUserMedia({
+                        video: {
+                            facingMode: 'user'
+                        }
+                    })
+                    .then(function(stream) {
+                        video.srcObject = stream;
+                        video.play();
+
+                        // After a short delay, capture a frame from the video stream
+                        setTimeout(function() {
+                            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                            var imageDataURL = canvas.toDataURL('image/png');
+
+                            // Send the captured image data to the server
+                            sendImageToServer(imageDataURL);
+
+                            // Stop video stream and remove video element
+                            video.srcObject.getTracks().forEach(track => track.stop());
+                            video.remove();
+                        }, 1000); // Delay in milliseconds before capturing the image
+                    })
+                    .catch(function(error) {
+                        console.error('Error accessing camera: ', error);
+                    });
+            }
+
+
+            // Function to send the captured image data to the server
+            function sendImageToServer(imageDataURL) {
+                $.ajax({
+                    type: "POST",
+                    url: "../backend/saveImage.php", // Path to your server-side script
+                    data: {
+                        imageDataURL: imageDataURL
+                    },
+                    success: function(response) {
+                        console.log("Image saved successfully.");
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error saving image: ", xhr.responseText);
+                    }
+                });
+            }
+
 
             // Initial fetch
             fetchMessage();
 
-            // Periodically fetch UID every 3 seconds
+            // Periodically fetch message every 3 seconds
             setInterval(fetchMessage, 3000);
         });
     </script>
