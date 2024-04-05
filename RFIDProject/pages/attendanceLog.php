@@ -2,6 +2,7 @@
 require("../backend/local_setting.php");
 $Write = "<?php " . "echo " . "'';" . " ?>";
 file_put_contents('../backend/messageContainer.php', $Write);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,8 +41,9 @@ file_put_contents('../backend/messageContainer.php', $Write);
                     <th>STUDENT ID</th>
                     <th>SECTION</th>
                     <th>NAME</th>
-                    <th>TIME IN</th>
+                    <th>TIME</th>
                     <th>REMARKS</th>
+                    <th>LOCATION</th>
                 </tr>
                 <?php
                 $sql = "SELECT * FROM student_info JOIN attendance ON attendance.student_id = student_info.student_id";
@@ -54,12 +56,17 @@ file_put_contents('../backend/messageContainer.php', $Write);
                     while ($resultRow = mysqli_fetch_assoc($result)) {
 
                 ?>
-                        <tr class="<?php echo ($resultRow["remarks"] == 'LATE') ? 'late' : (($resultRow["remarks"] == 'EARLY') ? 'early' : ''); ?>">
+                        <tr class="<?php echo ($resultRow["remarks"] == 'LATE') ? 'late' : (($resultRow["remarks"] == 'EARLY') ? 'early' : (($resultRow["remarks"] === '') ? 'empty' : '')); ?>">
                             <td><?php echo $resultRow["student_id"] ?></td>
                             <td><?php echo $resultRow["section"]  ?></td>
                             <td><?php echo $resultRow["name"]  ?></td>
-                            <td><?php echo date('h:i A', strtotime($resultRow["time-in"])) ?></td>
+                            <?php if($resultRow['status'] == 'entered') { ?>
+                                <td><?php echo date('h:i A', strtotime($resultRow["time-in"])).' (IN)' ?></td>
+                            <?php } else { ?>
+                                <td><?php echo date('h:i A', strtotime($resultRow["time-in"])).' (EXIT)' ?></td>
+                            <?php } ?>
                             <td><?php echo $resultRow["remarks"]  ?></td>
+                            <td><?php echo $resultRow["location"]  ?></td>
                         </tr>
                 <?php  }
                 } ?>

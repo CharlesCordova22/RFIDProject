@@ -96,3 +96,7 @@ tr.late {
 tr.early {
     background-color: #008000; /* Green background for early */
 }
+
+tr.empty {
+    background-color: #14213D !important;
+}

@@ -1,1 +1,1 @@
-<?php echo 'Detected'; ?>
+<?php echo json_encode(array('student_id' => 1003, 'message' => 'Attendance recorded successfully!')); ?>

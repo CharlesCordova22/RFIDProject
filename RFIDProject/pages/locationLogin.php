@@ -1,3 +1,12 @@
+<?php 
+    require("../backend/local_setting.php");
+
+    $student_id = $_GET['student_id'];
+
+    $sqlInsert2 = "INSERT INTO attendance (`student_id`, `time-in`, `date`, `location`, `remarks`, `status`)
+    VALUES ('$student_id', NOW(), NOW(), 'COMFORT ROOM', '', 'exit')";
+    $resultInsert2 = mysqli_query($conn, $sqlInsert2);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

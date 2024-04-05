@@ -5,13 +5,17 @@ if (isset($_POST['imageDataURL'])) {
     $imageDataURL = $_POST['imageDataURL'];
 
     // Remove the data URI scheme and save the image data to a file
-    $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imageDataURL));
+    $imageData = str_replace('data:image/png;base64,', '', $imageDataURL);
+
+    $imageData = base64_decode($imageData);
 
     // Define the path where you want to save the image
-    $filePath = '../images/captured_image.png'; // Example path
+    $uploadPath = '../images/'; // Example path
+
+    $filename = $uploadPath . uniqid() . '.png';
 
     // Save the image to the file
-    if (file_put_contents($filePath, $imageData)) {
+    if (file_put_contents($filename, $imageData) !== false) {
         echo "Image saved successfully.";
     } else {
         echo "Error saving image.";

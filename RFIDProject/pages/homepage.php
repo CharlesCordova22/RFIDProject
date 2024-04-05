@@ -15,24 +15,27 @@ file_put_contents('../backend/messageContainer.php', $Write);
         $(document).ready(function() {
             // Function to fetch message from server
             function fetchMessage() {
-                $.ajax({
-                    url: "../backend/messageContainer.php",
-                    type: "POST",
-                    success: function(response) {
-                        if (response.message === "Attendance recorded successfully!") {
-                            console.log("Response received: ", response); // Log the response to the console
-                            $("#getMessage").html(response); // Update the message on the page
-                            captureImage(); // Capture image after swiping the card
-                        } else if (response.message === "Time-out updated successfully!") {
-                            let student_id = response.student_id;
-                            window.location.href = '../pages/locationLogin.php?student_id=' + student_id;
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error occurred: ", xhr.responseText);
+            $.ajax({
+                url: "../backend/messageContainer.php",
+                type: "POST",
+                dataType: "json", // Specify the expected data type as JSON
+                success: function(response) {
+                    if (response.message === "Attendance recorded successfully!") {
+                        console.log("Response received: ", response.message); // Log the response to the console
+                        $("#getMessage").html(response.message); // Update the message on the page
+                        captureImage(); // Capture image after swiping the card
+                        // window.location.href = '../pages/attendanceLog.php';
+                    } else if (response.message === "Time-out updated successfully!") {
+                        let student_id = response.student_id;
+                        window.location.href = '../pages/locationLogin.php?student_id=' + student_id;
                     }
-                });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error occurred: ", xhr.responseText);
+                }
+            });
             }
+
 
             function captureImage() {
                 var video = document.createElement('video');
@@ -41,7 +44,7 @@ file_put_contents('../backend/messageContainer.php', $Write);
 
                 navigator.mediaDevices.getUserMedia({
                         video: {
-                            facingMode: 'user'
+                            facingMode: ''
                         }
                     })
                     .then(function(stream) {
@@ -77,6 +80,7 @@ file_put_contents('../backend/messageContainer.php', $Write);
                     },
                     success: function(response) {
                         console.log("Image saved successfully.");
+                        console.log(response);
                     },
                     error: function(xhr, status, error) {
                         console.error("Error saving image: ", xhr.responseText);
@@ -106,11 +110,15 @@ file_put_contents('../backend/messageContainer.php', $Write);
         </div>
     </div>
     <div class="scan-container">
-        <div class="scan-name">
+        <div class="scan-name"> 
             <h6 id="getMessage"></h6>
             <h3>SCAN HERE</h3>
         </div>
+        
+        <video id="video" width="100%" height="auto" autoplay playsinline></video>
+        <canvas id="canvas" style="display: none;"></canvas>
     </div>
+
     <div class="arrow-container">
         <div class="arrow-down"></div>
     </div>

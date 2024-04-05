@@ -25,10 +25,12 @@ if (!empty($_POST['tag'])) {
 				$student_id = $resultRow["student_id"];
 
 				// Check if the student has already scanned in today
-				$sqlCheckScan = "SELECT * FROM attendance WHERE `student_id` = '$student_id' AND DATE(`date`) = CURDATE() AND `time-in` IS NOT NULL";
+				$sqlCheckScan = "SELECT status FROM attendance WHERE `student_id` = '$student_id' AND DATE(`date`) = CURDATE() ORDER BY `time-in` DESC LIMIT 1";
 				$resultCheckScan = mysqli_query($conn, $sqlCheckScan);
 
-				if (mysqli_num_rows($resultCheckScan) > 0) {
+				$resultRow = mysqli_fetch_assoc($resultCheckScan);
+
+				if ($resultRow['status'] == 'entered') {
 					// The student has already scanned in today, update time-out
 					file_put_contents("messageContainer.php", "<?php echo json_encode(array('student_id' => $student_id, 'message' => 'Time-out updated successfully!')); ?>");
 
@@ -43,6 +45,7 @@ if (!empty($_POST['tag'])) {
 					} */
 				} else {
 					// The student is scanning in for the first time today
+					date_default_timezone_set('Asia/Manila');
 					$current_time = date('H:i:s'); // Get current time
 					$late_time = '07:15:00'; // Late time threshold
 
@@ -53,8 +56,8 @@ if (!empty($_POST['tag'])) {
 					}
 
 					// Insert attendance record
-					$sqlInsert = "INSERT INTO attendance (`student_id`, `time-in`, `date`, `remarks`)
-                                  VALUES ('$student_id', NOW(), NOW(), '$remarks')";
+					$sqlInsert = "INSERT INTO attendance (`student_id`, `time-in`, `date`, `location`, `remarks`, `status`)
+                                  VALUES ('$student_id', NOW(), NOW(), 'ROOM', '$remarks', 'entered')";
 					$resultInsert = mysqli_query($conn, $sqlInsert);
 
 					if ($resultInsert) {

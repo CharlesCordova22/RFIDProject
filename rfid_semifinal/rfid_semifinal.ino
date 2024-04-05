@@ -12,8 +12,8 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);  //--> Create MFRC522 instance.
 
 
 
-const char* ssid = "ArvaStudios_2.4G";
-const char* password = "Arvatross428";
+const char* ssid = "CORDOVA222";
+const char* password = "charlescharles";
 
 
 ESP8266WebServer server(80);  //--> Server on port 80
@@ -67,7 +67,7 @@ void loop() {
     //Post Data
     postData = "tag=" + UIDresultSend;
   
-    http.begin(client,"http://192.168.1.25/RFIDProject/RFIDProject/backend/getUID.php");  //Specify request destination
+    http.begin(client,"http://192.168.0.107/RFIDProject/RFIDProject/backend/getUID.php");  //Specify request destination
     http.addHeader("Content-Type", "application/x-www-form-urlencoded"); //Specify content-type header
    
     int httpCode = http.POST(postData);   //Send the request
