@@ -114,15 +114,16 @@ file_put_contents('../backend/messageContainer.php', $Write);
             <h6 id="getMessage"></h6>
             <h3>SCAN HERE</h3>
         </div>
-        
-        <video id="video" width="100%" height="auto" autoplay playsinline></video>
-        <canvas id="canvas" style="display: none;"></canvas>
     </div>
 
     <div class="arrow-container">
         <div class="arrow-down"></div>
     </div>
-    <div id="scanMessage"></div> <!-- Placeholder for scan message -->
+    <div style="visibility: hidden;">
+            <video id="video" width="100%" height="auto" autoplay playsinline></video>
+            <canvas id="canvas" style="display: none;"></canvas>
+        </div>
+    <!-- <div id="scanMessage"></div> Placeholder for scan message -->
     <?php include '../layout/bottomNavbar.php'; ?>
 </body>
 

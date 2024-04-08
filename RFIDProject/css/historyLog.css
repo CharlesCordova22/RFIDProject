@@ -11,16 +11,40 @@ body{
 .location{
     margin-top: -30px;
     margin-bottom: -30px;
+    padding-left:50vh;
+    padding-right:50vh;
 }
 .location h1{
     text-align: center;
-    font-size: 80px;
+    font-size: 45px;
 }
 .date{
-    margin-top:-60px;
+    margin-top:-70px;
     padding-bottom: 0px;
+    margin-left: -30vh;
+    margin-right: -30vh;
+    display: flex;
+    justify-content: space-between;
     text-align: center;
     font-size: 25px;
+}
+.date .left button{
+    border:none;
+    cursor: pointer;
+    background-color: transparent;
+    /* margin-top:-30px; */
+}
+.date .left img{
+    width: 9vh;
+}
+.date .right button{
+    border:none;
+    cursor: pointer;
+    background-color: transparent;
+    /* margin-top:-60px; */
+}
+.date .right img{
+    width: 9vh;
 }
 .navbar {
     position: fixed;
@@ -32,7 +56,11 @@ body{
     display: flex;
     justify-content: space-evenly;
 }
-
+/* .navigation{
+    display: flex;
+    justify-content: space-between;
+    background-color: red;
+} */
 .nav-item {
     margin: 0 10px;
     cursor: pointer;

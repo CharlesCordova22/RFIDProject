@@ -14,66 +14,67 @@ body{
 }
 .location h1{
     text-align: center;
-    font-size: 80px;
+    font-size: 70px;
 }
 /* --------------------------------------- */
 .align-btn1{
     display: flex;
     justify-content: space-evenly;
-    margin-top:50px;
+    margin-top:30px;
 }
 .comfort{
-    width:50vh;
+    width:70vh;
 }
 .comfort button{
-    padding: 40px 0px 40px 0px;
+    padding: 10px 0px 10px 0px;
     cursor: pointer;
     width: 100%;
     border: none;
     border-radius: 25px;
-    font-size: 20px;
+    font-size: 15px;
     background-color: #C0C0C0;
 }
 .faculty{
-    width:50vh;
+    width:70vh;
 }
 .faculty button{
-    padding: 40px 0px 40px 0px;
+    padding: 10px 0px 10px 0px;
     cursor: pointer;
     width: 100%;
     border: none;
     border-radius: 25px;
-    font-size: 20px;
+    font-size: 15px;
     background-color: #C0C0C0;
 }
 /* --------------------------------------- */
 .align-btn2{
     display: flex;
     justify-content: space-evenly;
-    margin-top:50px;
+    margin-top:30px;
+    /* margin-bottom:75px; */
 }
 .clinic{
-    width:50vh;
+    width:70vh;
 }
 .clinic button{
-    padding: 40px 0px 40px 0px;
+    padding: 10px 0px 10px 0px;
     cursor: pointer;
     width: 100%;
     border: none;
     border-radius: 25px;
-    font-size: 20px;
+    font-size: 15px;
     background-color: #C0C0C0;
 }
 .office{
-    width:50vh;
+    width:70vh;
 }
 .office button{
-    padding: 40px 0px 40px 0px;
+    padding: 10px 0px 10px 0px;
     cursor: pointer;
     width: 100%;
     border: none;
     border-radius: 25px;
-    font-size: 20px;
+    font-size: 15px;
     background-color: #C0C0C0;
 }
 .navbar {
@@ -81,7 +82,8 @@ body{
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: transparent;
+    padding:5px;
+    background-color:#e5e5e5;
     display: flex;
     justify-content: space-evenly;
 }
