@@ -39,8 +39,13 @@ if (!empty($_POST['tag'])) {
 					$current_time = date('H:i:s'); // Get current time
 					$late_time = '07:15:00'; // Late time threshold
 
+					$sqlCheckScan2 = "SELECT remarks FROM attendance WHERE `student_id` = '$student_id' AND DATE(`date`) = CURDATE() AND `status` = 'entered' ORDER BY `time-in` ASC LIMIT 1";
+					$resultCheckScan2 = mysqli_query($conn, $sqlCheckScan2);
+
+					$resultRow2 = mysqli_fetch_assoc($resultCheckScan2);
+
 					// Check if the student has already entered early today
-					if ($resultRow['remarks'] == 'EARLY') {
+					if ($resultRow2['remarks'] == 'EARLY') {
 						$remarks = 'EARLY';
 					} else {
 						if ($current_time <= $late_time) {
