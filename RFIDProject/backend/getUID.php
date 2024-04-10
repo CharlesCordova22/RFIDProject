@@ -70,7 +70,7 @@ if (!empty($_POST['tag'])) {
 			}
 		} else {
 			// No student found for the scanned RFID
-			file_put_contents("messageContainer.php", "<?php echo 'No student found!'; ?>");
+			file_put_contents("messageContainer.php", "<?php echo json_encode(array('message' => 'No student found!')); ?>");
 			echo json_encode("No student found for the scanned RFID");
 		}
 	} else {

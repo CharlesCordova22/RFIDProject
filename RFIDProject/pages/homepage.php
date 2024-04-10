@@ -12,88 +12,71 @@ file_put_contents('../backend/messageContainer.php', $Write);
     <title>Homepage</title>
     <script type="text/javascript" src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script>
+        // Function to handle image upload
+        function handleImageUpload(event) {
+            var file = event.target.files[0]; // Get the uploaded file
+            if (file) {
+                var reader = new FileReader();
+                reader.readAsDataURL(file); // Read the file as data URL
+                reader.onload = function() {
+                    var imageDataURL = reader.result;
+                    sendImageToServer(imageDataURL); // Send the image data to the server
+                };
+                reader.onerror = function(event) {
+                    console.error("Error reading the file:", event.target.error);
+                };
+            }
+        }
+
+
+        // Function to send the captured image data to the server
+        function sendImageToServer(imageDataURL) {
+            $.ajax({
+                type: "POST",
+                url: "../backend/saveImage.php", // Path to your server-side script
+                data: {
+                    imageDataURL: imageDataURL
+                },
+                success: function(response) {
+                    console.log("Image saved successfully.");
+                    window.location.href = '../pages/attendanceLog.php';
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error saving image: ", xhr.responseText);
+                }
+            });
+        }
+
         $(document).ready(function() {
             // Function to fetch message from server
             function fetchMessage() {
-            $.ajax({
-                url: "../backend/messageContainer.php",
-                type: "POST",
-                dataType: "json", // Specify the expected data type as JSON
-                success: function(response) {
-                    if (response.message === "Attendance recorded successfully!") {
-                        console.log("Response received: ", response.message); // Log the response to the console
-                        $("#getMessage").html(response.message); // Update the message on the page
-                        captureImage(); // Capture image after swiping the card
-                        // window.location.href = '../pages/attendanceLog.php';
-                    } else if (response.message === "Time-out updated successfully!") {
-                        let student_id = response.student_id;
-                        window.location.href = '../pages/locationLogin.php?student_id=' + student_id;
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error occurred: ", xhr.responseText);
-                }
-            });
-            }
-
-
-            function captureImage() {
-                var video = document.createElement('video');
-                var canvas = document.getElementById('canvas');
-                var context = canvas.getContext('2d');
-
-                navigator.mediaDevices.getUserMedia({
-                        video: {
-                            facingMode: ''
-                        }
-                    })
-                    .then(function(stream) {
-                        video.srcObject = stream;
-                        video.play();
-
-                        // After a short delay, capture a frame from the video stream
-                        setTimeout(function() {
-                            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                            var imageDataURL = canvas.toDataURL('image/png');
-
-                            // Send the captured image data to the server
-                            sendImageToServer(imageDataURL);
-
-                            // Stop video stream and remove video element
-                            video.srcObject.getTracks().forEach(track => track.stop());
-                            video.remove();
-                        }, 1000); // Delay in milliseconds before capturing the image
-                    })
-                    .catch(function(error) {
-                        console.error('Error accessing camera: ', error);
-                    });
-            }
-
-
-            // Function to send the captured image data to the server
-            function sendImageToServer(imageDataURL) {
                 $.ajax({
+                    url: "../backend/messageContainer.php",
                     type: "POST",
-                    url: "../backend/saveImage.php", // Path to your server-side script
-                    data: {
-                        imageDataURL: imageDataURL
-                    },
                     success: function(response) {
-                        console.log("Image saved successfully.");
-                        console.log(response);
+                        response = JSON.parse(response); // Parse JSON response
+                        if (response.message === "Attendance recorded successfully!") {
+                            console.log("Response received: ", response); // Log the response to the console
+                            $("#getMessage").html(response.message); // Update the message on the page
+                            $('#captureImageButton').show(); // Show the capture image button after swiping the card
+                        } else if (response.message === "Time-out updated successfully!") {
+                            let student_id = response.student_id;
+                            window.location.href = '../pages/locationLogin.php?student_id=' + student_id;
+                        } else {
+                            // Handle other messages here
+                        }
                     },
                     error: function(xhr, status, error) {
-                        console.error("Error saving image: ", xhr.responseText);
+                        console.error("Error occurred: ", xhr.responseText);
                     }
                 });
             }
 
-
             // Initial fetch
             fetchMessage();
 
-            // Periodically fetch message every 3 seconds
-            setInterval(fetchMessage, 3000);
+            // Periodically fetch message every 4 seconds
+            setInterval(fetchMessage, 4000);
         });
     </script>
 </head>
@@ -110,20 +93,19 @@ file_put_contents('../backend/messageContainer.php', $Write);
         </div>
     </div>
     <div class="scan-container">
-        <div class="scan-name"> 
+        <div class="scan-name">
             <h6 id="getMessage"></h6>
             <h3>SCAN HERE</h3>
+            <!-- Button to capture image -->
+            <button id="captureImageButton" onclick="$('#imageFile').trigger('click');" style="display: none;">Capture Image</button>
+            <!-- File input to capture image -->
+            <input type="file" id="imageFile" accept="image/*" capture="user" onchange="handleImageUpload(event)" style="display: none;" />
         </div>
     </div>
 
     <div class="arrow-container">
         <div class="arrow-down"></div>
     </div>
-    <div style="visibility: hidden;">
-            <video id="video" width="100%" height="auto" autoplay playsinline></video>
-            <canvas id="canvas" style="display: none;"></canvas>
-        </div>
-    <!-- <div id="scanMessage"></div> Placeholder for scan message -->
     <?php include '../layout/bottomNavbar.php'; ?>
 </body>
 
