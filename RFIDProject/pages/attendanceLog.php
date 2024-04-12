@@ -19,10 +19,10 @@ file_put_contents('../backend/messageContainer.php', $Write);
             setInterval(function() {
                 $("#getUID").load("../backend/UIDContainer.php");
             }, 500);
-            // Redirect after 10 seconds
+            // Redirect after 5 seconds
             setTimeout(function() {
                 window.location.href = 'homepage.php';
-            }, 10000); // 10 seconds
+            }, 5000); // 5 seconds
         });
     </script>
 </head>
@@ -40,8 +40,9 @@ file_put_contents('../backend/messageContainer.php', $Write);
     </div>
     <div class="table-container">
         <div class="inner-container">
-            <table>
+            <table id="attendanceTableContainer">
                 <tr>
+                    <th>IMAGE</th>
                     <th>STUDENT ID</th>
                     <th>SECTION</th>
                     <th>NAME</th>
@@ -50,7 +51,7 @@ file_put_contents('../backend/messageContainer.php', $Write);
                     <th>LOCATION</th>
                 </tr>
                 <?php
-                  $sql = "SELECT * FROM student_info JOIN attendance ON attendance.student_id = student_info.student_id WHERE date = CURDATE() ORDER BY attendance.`time-in` DESC";
+                $sql = "SELECT * FROM student_info JOIN attendance ON attendance.student_id = student_info.student_id WHERE date = CURDATE() ORDER BY attendance.`time-in` DESC";
                 $result = mysqli_query($conn, $sql);
                 if (!$result) {
                     // Query failed, handle the error
@@ -61,13 +62,14 @@ file_put_contents('../backend/messageContainer.php', $Write);
 
                 ?>
                         <tr class="<?php echo ($resultRow["remarks"] == 'LATE') ? 'late' : (($resultRow["remarks"] == 'EARLY') ? 'early' : (($resultRow["remarks"] === '') ? 'empty' : '')); ?>">
+                            <td><img src="../images/<?php echo $resultRow["image"] ?>" alt="Attendance Image" width="100" height="100"></td>
                             <td><?php echo $resultRow["student_id"] ?></td>
                             <td><?php echo $resultRow["section"]  ?></td>
                             <td><?php echo $resultRow["name"]  ?></td>
-                            <?php if($resultRow['status'] == 'entered') { ?>
-                                <td><?php echo date('h:i A', strtotime($resultRow["time-in"])).' (IN)' ?></td>
+                            <?php if ($resultRow['status'] == 'entered') { ?>
+                                <td><?php echo date('h:i A', strtotime($resultRow["time-in"])) . ' (IN)' ?></td>
                             <?php } else { ?>
-                                <td><?php echo date('h:i A', strtotime($resultRow["time-in"])).' (EXIT)' ?></td>
+                                <td><?php echo date('h:i A', strtotime($resultRow["time-in"])) . ' (EXIT)' ?></td>
                             <?php } ?>
                             <td><?php echo $resultRow["remarks"]  ?></td>
                             <td><?php echo $resultRow["location"]  ?></td>
@@ -78,6 +80,28 @@ file_put_contents('../backend/messageContainer.php', $Write);
         </div>
     </div>
     <?php include '../layout/bottomNavbar.php'; ?>
+    <script>
+        // Function to fetch updated attendance log from the server
+        function fetchAttendanceLog() {
+            $.ajax({
+                url: "../backend/fetchAttendanceLog.php",
+                type: "GET",
+                success: function(data) {
+                    // Update the content of the attendance table container
+                    $("#attendanceTableContainer").html(data);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching attendance log: ", xhr.responseText);
+                }
+            });
+        }
+
+        // Initial fetch
+        fetchAttendanceLog();
+
+        // Periodically fetch attendance log every 5 seconds
+        setInterval(fetchAttendanceLog, 2000);
+    </script>
 </body>
 
 </html>

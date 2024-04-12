@@ -28,7 +28,6 @@ file_put_contents('../backend/messageContainer.php', $Write);
             }
         }
 
-
         // Function to send the captured image data to the server
         function sendImageToServer(imageDataURL) {
             $.ajax({
@@ -39,6 +38,7 @@ file_put_contents('../backend/messageContainer.php', $Write);
                 },
                 success: function(response) {
                     console.log("Image saved successfully.");
+                    fetchAndProcessMessage(response); // Fetch message and process attendance after saving the image
                     window.location.href = '../pages/attendanceLog.php';
                 },
                 error: function(xhr, status, error) {
@@ -47,36 +47,55 @@ file_put_contents('../backend/messageContainer.php', $Write);
             });
         }
 
-        $(document).ready(function() {
-            // Function to fetch message from server
-            function fetchMessage() {
-                $.ajax({
-                    url: "../backend/messageContainer.php",
-                    type: "POST",
-                    success: function(response) {
-                        response = JSON.parse(response); // Parse JSON response
-                        if (response.message === "Attendance recorded successfully!") {
-                            console.log("Response received: ", response); // Log the response to the console
-                            $("#getMessage").html(response.message); // Update the message on the page
-                            $('#captureImageButton').show(); // Show the capture image button after swiping the card
-                        } else if (response.message === "Time-out updated successfully!") {
-                            let student_id = response.student_id;
-                            window.location.href = '../pages/locationLogin.php?student_id=' + student_id;
-                        } else {
-                            // Handle other messages here
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error occurred: ", xhr.responseText);
+        // Function to fetch message from server and process attendance
+        function fetchAndProcessMessage(filename) {
+            $.ajax({
+                url: "../backend/messageContainer.php",
+                type: "POST",
+                success: function(response) {
+                    response = JSON.parse(response); // Parse JSON response
+                    if (response.message === "Attendance recorded successfully!") {
+                        console.log("Response received: ", response); // Log the response to the console
+                        $("#getMessage").html(response.message); // Update the message on the page
+                        $('#captureImageButton').show(); // Show the capture image button after swiping the card
+                        updateAttendance(filename, response.attendance_id); // Update attendance record with filename and student ID
+                    } else if (response.message === "Time-out updated successfully!") {
+                        let student_id = response.student_id;
+                        window.location.href = '../pages/locationLogin.php?student_id=' + student_id;
+                    } else {
+                        // Handle other messages here
                     }
-                });
-            }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error occurred: ", xhr.responseText);
+                }
+            });
+        }
 
+        // Function to update attendance record with the filename
+        function updateAttendance(filename, attendance_id) {
+            $.ajax({
+                type: "POST",
+                url: "../backend/updateAttendance.php", // Path to your server-side script for updating attendance
+                data: {
+                    filename: filename, // Pass the filename to updateAttendance.php
+                    attendance_id: attendance_id // Pass the student ID to updateAttendance.php
+                },
+                success: function(response) {
+                    console.log("Attendance record updated successfully.");
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error updating attendance: ", xhr.responseText);
+                }
+            });
+        }
+
+        $(document).ready(function() {
             // Initial fetch
-            fetchMessage();
+            fetchAndProcessMessage('');
 
             // Periodically fetch message every 4 seconds
-            setInterval(fetchMessage, 4000);
+            setInterval(fetchAndProcessMessage, 4000);
         });
     </script>
 </head>
@@ -102,7 +121,6 @@ file_put_contents('../backend/messageContainer.php', $Write);
             <input type="file" id="imageFile" accept="image/*" capture="user" onchange="handleImageUpload(event)" style="display: none;" />
         </div>
     </div>
-
     <div class="arrow-container">
         <div class="arrow-down"></div>
     </div>

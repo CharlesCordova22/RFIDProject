@@ -1,5 +1,4 @@
 <?php
-// Check if the POST request contains image data
 if (isset($_POST['imageDataURL'])) {
     // Get the image data
     $imageDataURL = $_POST['imageDataURL'];
@@ -16,14 +15,15 @@ if (isset($_POST['imageDataURL'])) {
         mkdir($uploadPath, 0777, true);
     }
 
-    $filename = $uploadPath . uniqid() . '.jpg'; // Change file extension to .jpg for JPEG format
+    $filename = uniqid() . '.jpg'; // Generate a unique filename for the image
 
     // Save the image to the file
-    if (file_put_contents($filename, $imageData) !== false) {
-        echo "Image saved successfully.";
+    if (file_put_contents($uploadPath . $filename, $imageData) !== false) {
+        echo $filename; // Return the filename to be saved in the database
     } else {
         echo "Error saving image.";
     }
 } else {
     echo "No image data received.";
 }
+?>
