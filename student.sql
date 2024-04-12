@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 25, 2024 at 07:06 AM
+-- Generation Time: Apr 12, 2024 at 07:51 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,8 +33,29 @@ CREATE TABLE `attendance` (
   `time-in` time NOT NULL,
   `time-return` time NOT NULL,
   `date` date NOT NULL,
-  `remarks` varchar(100) NOT NULL
+  `location` varchar(50) NOT NULL,
+  `remarks` varchar(100) NOT NULL,
+  `image` varchar(100) NOT NULL,
+  `status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_general_ci;
+
+--
+-- Dumping data for table `attendance`
+--
+
+INSERT INTO `attendance` (`id`, `student_id`, `time-in`, `time-return`, `date`, `location`, `remarks`, `image`, `status`) VALUES
+(1, '1003', '01:27:11', '00:00:00', '2024-04-13', 'ROOM', 'EARLY', '66196efd60d30.jpg', 'entered'),
+(2, '1003', '01:28:27', '00:00:00', '2024-04-13', 'CLINIC', '', '', 'exit'),
+(3, '1004', '01:28:37', '00:00:00', '2024-04-13', 'ROOM', 'EARLY', '66196f4b29123.jpg', 'entered'),
+(4, '1003', '01:28:49', '00:00:00', '2024-04-13', 'ROOM', 'EARLY', '', 'entered'),
+(5, '1003', '01:28:54', '00:00:00', '2024-04-13', 'COMFORT ROOM', '', '', 'exit'),
+(6, '1003', '01:29:06', '00:00:00', '2024-04-13', 'ROOM', 'EARLY', '66196f6d54770.jpg', 'entered'),
+(7, '1004', '01:29:33', '00:00:00', '2024-04-13', 'COMFORT ROOM', '', '', 'exit'),
+(8, '1004', '01:29:51', '00:00:00', '2024-04-13', 'ROOM', 'EARLY', '66196f963df86.jpg', 'entered'),
+(9, '1004', '01:35:24', '00:00:00', '2024-04-13', 'CLINIC', '', '', 'exit'),
+(10, '1003', '01:35:46', '00:00:00', '2024-04-13', 'CLINIC', '', '', 'exit'),
+(11, '1002', '01:36:58', '00:00:00', '2024-04-13', 'ROOM', 'EARLY', '661971527ac74.jpg', 'entered'),
+(12, '1001', '01:39:34', '00:00:00', '2024-04-13', 'ROOM', 'EARLY', '661971dcabf08.jpg', 'entered');
 
 -- --------------------------------------------------------
 
@@ -84,7 +105,7 @@ ALTER TABLE `student_info`
 -- AUTO_INCREMENT for table `attendance`
 --
 ALTER TABLE `attendance`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `student_info`
