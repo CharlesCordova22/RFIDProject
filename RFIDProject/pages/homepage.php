@@ -56,7 +56,8 @@ file_put_contents('../backend/messageContainer.php', $Write);
                     response = JSON.parse(response); // Parse JSON response
                     if (response.message === "Attendance recorded successfully!") {
                         console.log("Response received: ", response); // Log the response to the console
-                        alert(response.message); // Display the message in an alert box
+                        let message = "Attendance recorded successfully!<br> Please capture an image!";
+                        $("#getMessage").html(message); // Display the message in an alert box
                         $('#captureImageButton').show(); // Show the capture image button after swiping the card
                         updateAttendance(filename, response.attendance_id); // Update attendance record with filename and student ID
                     } else if (response.message === "Time-out updated successfully!") {
@@ -111,21 +112,21 @@ file_put_contents('../backend/messageContainer.php', $Write);
             </div>
         </div>
     </div>
+    <!-- display messages -->
+    <div class="message">
+        <h6 id="getMessage"></h6>
+    </div>
+    <div class="capture">
+        <!-- Button to capture image -->
+        <button id="captureImageButton" onclick="$('#imageFile').trigger('click');" style="display: none;">Capture Image</button>
+    </div>
     <div class="scan-container">
         <div class="scan-name">
-            <!-- display messages -->
-            <div class="message">
-                <h6 id="getMessage"></h6>
-            </div>
             <h3>SCAN HERE</h3>
         </div>
     </div>
     <div class="arrow-container">
         <div class="arrow-down"></div>
-    </div>
-    <!-- Button to capture image -->
-    <div class="capture">
-        <button id="captureImageButton" onclick="$('#imageFile').trigger('click');" style="display: none;">Capture Image</button>
     </div>
     <!-- File input to capture image -->
     <input type="file" id="imageFile" accept="image/*" capture="user" onchange="handleImageUpload(event)" style="display: none;" />

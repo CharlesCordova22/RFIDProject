@@ -24,8 +24,9 @@ body{
 }
 .scan-name{
     font-size: 50px;
-    margin-top:-100px;
+    margin-top: -55px;
     margin-bottom:-60px;
+    /* background-color: aquamarine; */
 }
 .arrow-container{
     display: flex;
@@ -34,8 +35,8 @@ body{
 .arrow-down {
     text-decoration: none;
     text-shadow: 0;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-bottom: 15px solid black;
     border-right: 15px solid black;
     -webkit-transform: translate(-50%, 0%) rotate(45deg);
@@ -95,34 +96,28 @@ body{
 .nav-item img{
     width:6vh;
 }
-/* .message{
+.message{
     display: flex;
     justify-content: center;
-} */
+    /* background-color: red; */
+    margin-top: -90px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.message h6 {
+    font-size: 30px;
+}
 .capture{
     display: flex;
     justify-content: center;
-}
-.alert {
-    padding: 20px;
-    background-color: #f44336; /* Red */
-    color: white;
-    margin-bottom: 15px;
+    margin-top: -90px;
 }
 
-/* Add a close button to the alert */
-.closebtn {
-    margin-left: 15px;
-    color: white;
-    font-weight: bold;
-    float: right;
-    font-size: 22px;
-    line-height: 20px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-/* When hovering over the close button */
-.closebtn:hover {
-    color: black;
+.capture button {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 20px;
+    z-index: 1;
 }
