@@ -23,7 +23,14 @@ if (!$result) {
 
     while ($resultRow = mysqli_fetch_assoc($result)) {
         $tableHTML .= '<tr class="' . (($resultRow["remarks"] == 'LATE') ? 'late' : (($resultRow["remarks"] == 'EARLY') ? 'early' : (($resultRow["remarks"] === '') ? 'empty' : ''))) . '">
-                        <td><img src="../images/' . $resultRow["image"] . '" alt="Attendance Image" width="100" height="100"></td>
+                        <td>';
+        // Check if the image field is empty
+        if ($resultRow["image"] == '') {
+            $tableHTML .= '';
+        } else {
+            $tableHTML .= '<img src="../images/' . $resultRow["image"] . '" alt="Attendance Image" width="100" height="100">';
+        }
+        $tableHTML .= '</td>
                         <td>' . $resultRow["student_id"] . '</td>
                         <td>' . $resultRow["section"] . '</td>
                         <td>' . $resultRow["name"] . '</td>';

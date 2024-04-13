@@ -62,7 +62,11 @@ file_put_contents('../backend/messageContainer.php', $Write);
 
                 ?>
                         <tr class="<?php echo ($resultRow["remarks"] == 'LATE') ? 'late' : (($resultRow["remarks"] == 'EARLY') ? 'early' : (($resultRow["remarks"] === '') ? 'empty' : '')); ?>">
-                            <td><img src="../images/<?php echo $resultRow["image"] ?>" alt="Attendance Image" width="100" height="100"></td>
+                            <td>
+                                <?php if ($resultRow["image"] != '') : ?>
+                                    <img src="../images/<?php echo $resultRow["image"]; ?>" alt="Attendance Image" width="100" height="100">
+                                <?php endif; ?>
+                            </td>
                             <td><?php echo $resultRow["student_id"] ?></td>
                             <td><?php echo $resultRow["section"]  ?></td>
                             <td><?php echo $resultRow["name"]  ?></td>

@@ -60,6 +60,7 @@ $date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
         <div class="inner-container">
             <table>
                 <tr>
+                    <th>IMAGE</th>
                     <th>STUDENT ID</th>
                     <th>SECTION</th>
                     <th>NAME</th>
@@ -78,6 +79,11 @@ $date = isset($_GET['date']) ? $_GET['date'] : date('Y-m-d');
                     while ($resultRow = mysqli_fetch_assoc($result)) {
                 ?>
                         <tr class="<?php echo ($resultRow["remarks"] == 'LATE') ? 'late' : (($resultRow["remarks"] == 'EARLY') ? 'early' : (($resultRow["remarks"] === '') ? 'empty' : '')); ?>">
+                            <td>
+                                <?php if ($resultRow["image"] != '') : ?>
+                                    <img src="../images/<?php echo $resultRow["image"]; ?>" alt="Attendance Image" width="100" height="100">
+                                <?php endif; ?>
+                            </td>
                             <td><?php echo $resultRow["student_id"] ?></td>
                             <td><?php echo $resultRow["section"]  ?></td>
                             <td><?php echo $resultRow["name"]  ?></td>
