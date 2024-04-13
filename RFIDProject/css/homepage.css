@@ -95,3 +95,11 @@ body{
 .nav-item img{
     width:6vh;
 }
+/* .message{
+    display: flex;
+    justify-content: center;
+} */
+.capture{
+    display: flex;
+    justify-content: center;
+}

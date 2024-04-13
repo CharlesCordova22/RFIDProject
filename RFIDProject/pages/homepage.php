@@ -56,7 +56,7 @@ file_put_contents('../backend/messageContainer.php', $Write);
                     response = JSON.parse(response); // Parse JSON response
                     if (response.message === "Attendance recorded successfully!") {
                         console.log("Response received: ", response); // Log the response to the console
-                        $("#getMessage").html(response.message); // Update the message on the page
+                        alert(response.message); // Display the message in an alert box
                         $('#captureImageButton').show(); // Show the capture image button after swiping the card
                         updateAttendance(filename, response.attendance_id); // Update attendance record with filename and student ID
                     } else if (response.message === "Time-out updated successfully!") {
@@ -113,17 +113,22 @@ file_put_contents('../backend/messageContainer.php', $Write);
     </div>
     <div class="scan-container">
         <div class="scan-name">
-            <h6 id="getMessage"></h6>
+            <!-- display messages -->
+            <div class="message">
+                <h6 id="getMessage"></h6>
+            </div>
             <h3>SCAN HERE</h3>
-            <!-- Button to capture image -->
-            <button id="captureImageButton" onclick="$('#imageFile').trigger('click');" style="display: none;">Capture Image</button>
-            <!-- File input to capture image -->
-            <input type="file" id="imageFile" accept="image/*" capture="user" onchange="handleImageUpload(event)" style="display: none;" />
         </div>
     </div>
     <div class="arrow-container">
         <div class="arrow-down"></div>
     </div>
+    <!-- Button to capture image -->
+    <div class="capture">
+        <button id="captureImageButton" onclick="$('#imageFile').trigger('click');" style="display: none;">Capture Image</button>
+    </div>
+    <!-- File input to capture image -->
+    <input type="file" id="imageFile" accept="image/*" capture="user" onchange="handleImageUpload(event)" style="display: none;" />
     <?php include '../layout/bottomNavbar.php'; ?>
 </body>
 
